@@ -1,3 +1,66 @@
-@tailwind base;
+    @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Overlay untuk background gelap */
+.modal-overlay {
+    display: none; /* Default: hidden */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    z-index: 9; /* Dibawah modal */
+}
+
+/* Modal */
+.modal {
+    display: none; /* Default: hidden */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10; /* Diatas overlay */
+}
+
+/* Konten Modal */
+.modal-content {
+    width: 90%; /* Lebar modal, ubah sesuai kebutuhan */
+    max-width: 700px; /* Lebar maksimal modal, sesuaikan ukurannya */
+    background-color: #fff;
+    padding-left: 80px; /* Padding khusus di kiri */
+    padding-right: 80px; /* Padding khusus di kanan */
+    padding-top: 20px; /* Padding atas lebih kecil */
+    padding-bottom: 20px; /* Padding bawah lebih kecil */
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Tombol close (X) */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;   
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="number"],
+.modal-content input[type="file"],
+.modal-content select,
+.modal-content textarea {
+    width: 100%; /* Menyesuaikan lebar modal */
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Agar padding di dalam tidak menambah ukuran keseluruhan */
+}

@@ -17,7 +17,6 @@ use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('login');
-
 });
 Route::resource('products', ProductController::class);
 Route::resource('categories', CategoryController::class);
@@ -25,4 +24,8 @@ Route::resource('users', UserController::class);
 Route::get('/login', function () {
     return view('login');
 })->name('login');
-
+Route::resource('/products', ProductController::class);
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::post('/login', [UserController::class, 'login'])->name('users.login'); // Memproses login

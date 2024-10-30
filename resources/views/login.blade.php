@@ -33,24 +33,35 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
-                                    <form class="user" action="" method="Post">
-                                        <div class="form-group"> <input type="text" id="username" name="username"
-                                                required placeholder="username"
-                                                class="form-control form-control-user" />
+                                    <form class="user" action="{{ route('users.login') }}" method="POST">
+                                        @csrf <!-- Token CSRF untuk keamanan -->
+
+                                        <!-- Username -->
+                                        <div class="form-group">
+                                            <input type="text" id="username" name="username" required
+                                                placeholder="Username" class="form-control form-control-user"
+                                                value="{{ old('username') }}">
+                                            @error('username')
+                                                <span class="text-danger text-sm">{{ $message }}</span>
+                                            @enderror
                                         </div>
-                                        <div class="form-group"> <input type="password" id="password" name="password"
-                                                required placeholder="password"
-                                                class="form-control form-control-user" />
+
+                                        <!-- Password -->
+                                        <div class="form-group">
+                                            <input type="password" id="password" name="password" required
+                                                placeholder="Password" class="form-control form-control-user">
+                                            @error('password')
+                                                <span class="text-danger text-sm">{{ $message }}</span>
+                                            @enderror
                                         </div>
-                                        <button type="submit" class="btn btn-primary btn-user btn-block">Login
-                                        </button>
+
+                                        <!-- Submit Button -->
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
                                     </form>
+
                                     <hr>
                                     <div class="text-center">
-                                        <a href="{{ route('users.create') }}">Add New Product</a>
-                                    </div>
-                                    <div class="text-center">
-                                        <a href="{{ route('users.create') }}">Add New Product</a>
+                                        <a href="{{ route('users.create') }}">Register</a>
                                     </div>
                                 </div>
                             </div>

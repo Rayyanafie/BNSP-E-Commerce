@@ -44,8 +44,7 @@
             </div>
         </div>
     </main>
-
-
+    @vite('resources/js/modal.js')
 </body>
 
 </html>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -28,6 +29,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+
+        // Validasi data
         $request->validate([
             'username' => 'required|string|max:255',
             'password' => 'required|string|min:8',
@@ -39,10 +42,10 @@ class UserController extends Controller
             'phone' => 'required|string',
             'paypal_id' => 'required|string',
         ]);
-
+        // Hash password sebelum menyimpan
         User::create([
             'username' => $request->username,
-            'password' => $request->password,
+            'password' => bcrypt($request->password),
             'email' => $request->email,
             'birth_date' => $request->birth_date,
             'gender' => $request->gender,
@@ -51,8 +54,30 @@ class UserController extends Controller
             'phone' => $request->phone,
             'paypal_id' => $request->paypal_id,
         ]);
-        return redirect()->route('login')->with('success', 'Product created successfully.');
+
+        // Redirect ke halaman login atau halaman lain
+        return redirect()->route('login')->with('success', 'User created successfully.');
     }
+
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'password' => 'required|string|min:8',
+        ]);
+
+        // Proses login user
+        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+            // Redirect ke halaman dashboard atau halaman yang diinginkan setelah login
+            return redirect()->intended(route('products.index'));
+        } else {
+            // Redirect kembali dengan pesan error jika login gagal
+            return back()->withErrors(['username' => 'The provided credentials do not match our records.']);
+        }
+    }
+
+
 
     /**
      * Display the specified resource.

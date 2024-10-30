@@ -14,51 +14,65 @@
     <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
 
-        <!-- First Name -->
-        <div>
-            <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
-            <input type="text" name="first_name" id="first_name"
-                class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter first name">
-        </div>
-
         <!-- Product Name -->
         <div>
-            <label for="product_name" class="block text-sm font-medium text-gray-700">Product Name</label>
-            <input type="text" name="product_name" id="product_name"
+            <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
+            <input type="text" name="name" id="name"
                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter product name">
+                placeholder="Enter product name" required>
+            @error('name')
+                <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
-
-        <!-- Product Description -->
         <div>
-            <label for="product_description" class="block text-sm font-medium text-gray-700">Product
-                Description</label>
-            <textarea name="product_description" id="product_description"
+            <label for="description" class="block text-sm font-medium text-gray-700">Product Description</label>
+            <textarea name="description" id="description"
                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                 rows="3" placeholder="Enter product description"></textarea>
         </div>
 
-        <!-- Price -->
+        <div>
+            <label for="category_id" class="block text-sm font-medium text-gray-700">Product Category</label>
+            <select name="category_id" id="category_id"
+                class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                required>
+                <option value="">Select a Category</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
+            </select>
+            @error('category_id')
+                <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
+        </div>
+
         <div>
             <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
             <input type="number" name="price" id="price"
                 class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter price">
+                placeholder="Enter price" required>
+            @error('price')
+                <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
 
-        <!-- Product Image -->
         <div>
-            <label for="product_image" class="block text-sm font-medium text-gray-700">Product Image</label>
-            <input type="file" name="product_image" id="product_image" class="mt-1 block w-full text-gray-500">
+            <label for="image" class="block text-sm font-medium text-gray-700">Product Image</label>
+            <input type="file" name="image" id="image" class="mt-1 block w-full text-gray-500">
+            @error('image')
+                <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
         </div>
+
 
         <!-- Submit Button -->
         <div class="text-center">
             <button type="submit"
-                class="bg-blue-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Add
-                Product</button>
+                class="bg-blue-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                Add Product
+            </button>
         </div>
     </form>
 </div>
+
 @endsection
