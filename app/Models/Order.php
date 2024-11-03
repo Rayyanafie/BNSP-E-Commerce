@@ -1,41 +1,37 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cart extends Model
+class Order extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
+        'order_id',
         'product_id',
         'quantity',
-        'price'
+        'price',
+        'subtotal',
+        'transaction_id',
+        'order_group', // Add this line
     ];
 
-    /**
-     * Relasi ke model User
-     */
+    // Add this method
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class, 'transaction_id', 'transaction_id');
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
-    /**
-     * Relasi ke model Product
-     */
     public function product()
     {
         return $this->belongsTo(Product::class);
-    }
-
-    /**
-     * Mendapatkan total harga berdasarkan quantity dan price
-     */
-    public function getTotalPriceAttribute()
-    {
-        return $this->quantity * $this->price;
     }
 }

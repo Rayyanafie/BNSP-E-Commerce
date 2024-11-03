@@ -18,8 +18,6 @@ return new class extends Migration {
             $table->integer('quantity');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('product_id')->references('id')->on('products');
-
-
         });
     }
 
@@ -29,5 +27,9 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::dropIfExists('carts');
+    }
+    public function buy()
+    {
+
     }
 };

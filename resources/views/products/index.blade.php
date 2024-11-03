@@ -1,129 +1,146 @@
-@extends('layout')
+@extends('layouts.app')
+
 @section('header')
-<h1 class="text-center">Product Page</h1>
+<h1 class="text-center mb-4">Product Page</h1>
 @endsection
 
 @section('nav')
-<div class="container mx-auto flex justify-between items-center">
-    <!-- Left Side: Toko Alat Kesehatan -->
-    <div class="flex-shrink-0">
-        <button id="myBtn">Add New Product</button>
-    </div>
+<div class="container d-flex justify-content-between align-items-center my-3">
+    <!-- Left Side: Add New Product Button -->
+    <!-- Add New Product Button -->
+    <a href="#modalOverlay" data-bs-toggle="modal" class="btn btn-dark">Add New Product</a>
 
-    <!-- Right Side (Empty placeholder for alignment) -->
-    <div class="flex-shrink-0">
-        <button class="bg-red-500 text-white font-medium px-4 py-2 rounded hover:bg-red-600 transition duration-200">
-            Keranjang
-        </button>
-    </div>
+    <!-- Right Side: Cart Button -->
+    <a href="{{ route('cart.index') }}" class="btn btn-warning">Cart</a>
 </div>
 @endsection
 
 @section('content')
-<ul class="grid grid-cols-4 gap-4">
-    @foreach ($products as $product)
-        <li class="border border-black p-4">
-            @if ($product->image_path)
-                <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" class="mx-auto" width="400"
-                    height="400">
+<div class="container">
+    <div class="row">
+        <!-- Product Listing (Left Column) -->
+        <div class="col-lg-9">
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+                <script>
+                    setTimeout(function () {
+                        window.location.href = "{{ route('products.index') }}";
+                    }, 3000); // Redirect after 3 seconds
+                </script>
             @endif
-            <p>{{ $product->price }}</p>
-            <p>{{ $product->name }}</p>
 
-            <div class="grid grid-cols-2">
-                <button
-                    class="bg-red-500 text-white font-medium span-col-2 rounded hover:bg-red-600 transition duration-200">View</button>
-                <button
-                    class="bg-red-500 text-white font-medium  span-col-2 rounded hover:bg-red-600 transition duration-200">Buy</button>
+            <div class="row">
+                @foreach ($products as $product)
+                    <div class="col-md-3 mb-4">
+                        <div class="card h-100">
+                            @if ($product->image_path)
+                                <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}"
+                                    class="card-img-top">
+                            @endif
+                            <div class="card-body text-center">
+                                <h5 class="card-title">{{ $product->name }}</h5>
+                                <p class="card-text">${{ number_format($product->price, 2) }}</p>
+
+                                <div class="d-grid gap-2">
+                                    <!-- View Button -->
+                                    <button class="btn btn-outline-secondary">View</button>
+
+                                    <!-- Buy Button -->
+                                    <form action="{{ route('cart.add') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                        <button type="submit" class="btn btn-success">Buy</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
+        </div>
 
-        </li>
-    @endforeach
-</ul>
-@endsection
-
-
-@section('aside')
-<aside>
-    <h2 class="justify-items-center">Categories</h2>
-    <ul>
-        @foreach ($categories as $category)
-            <li>{{ $category->name }}</li>
-        @endforeach
-    </ul>
-</aside>
-@endsection
-
-
-<div id="modalOverlay" class="modal-overlay"></div>
-<!-- The Modal -->
-<div id="myModal" class="modal">
-
-    <!-- Modal content -->
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-            @csrf
-
-            <!-- Product Name -->
-            <div>
-                <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
-                <input type="text" name="name" id="name"
-                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Enter product name" required>
-                @error('name')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
-            </div>
-            <div>
-                <label for="description" class="block text-sm font-medium text-gray-700">Product Description</label>
-                <textarea name="description" id="description"
-                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    rows="3" placeholder="Enter product description"></textarea>
-            </div>
-
-            <div>
-                <label for="category_id" class="block text-sm font-medium text-gray-700">Product Category</label>
-                <select name="category_id" id="category_id"
-                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    required>
-                    <option value="">Select a Category</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+        <!-- Categories Sidebar (Right Column) -->
+        <div class="col-lg-3">
+            <aside class="bg-light rounded p-3 shadow-sm">
+                <h4 class="text-center">Categories</h4>
+                <ul class="list-group list-group-flush">
+                    @foreach ($categories as $category)
+                        <li class="list-group-item">{{ $category->name }}</li>
                     @endforeach
-                </select>
-                @error('category_id')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div>
-                <label for="price" class="block text-sm font-medium text-gray-700">Price</label>
-                <input type="number" name="price" id="price"
-                    class="mt-1 block w-full p-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Enter price" required>
-                @error('price')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div>
-                <label for="image" class="block text-sm font-medium text-gray-700">Product Image</label>
-                <input type="file" name="image" id="image" class="mt-1 block w-full text-gray-500">
-                @error('image')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
-            </div>
-
-
-            <!-- Submit Button -->
-            <div class="text-center">
-                <button type="submit"
-                    class="bg-blue-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                    Add Product
-                </button>
-            </div>
-        </form>
+                </ul>
+            </aside>
+        </div>
     </div>
+</div>
+@endsection
 
+<!-- Button to trigger modal -->
+
+<!-- Modal Definition -->
+<div id="modalOverlay" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Modal form content -->
+                <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <!-- Product Name -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Product Name</label>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Enter product name"
+                            required>
+                        @error('name')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <!-- Product Description -->
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Product Description</label>
+                        <textarea name="description" id="description" class="form-control" rows="3"
+                            placeholder="Enter product description"></textarea>
+                    </div>
+                    <!-- Product Category -->
+                    <div class="mb-3">
+                        <label for="category_id" class="form-label">Product Category</label>
+                        <select name="category_id" id="category_id" class="form-select" required>
+                            <option value="">Select a Category</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('category_id')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <!-- Price -->
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Price</label>
+                        <input type="number" name="price" id="price" class="form-control" placeholder="Enter price"
+                            required>
+                        @error('price')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <!-- Product Image -->
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Product Image</label>
+                        <input type="file" name="image" id="image" class="form-control">
+                        @error('image')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Add Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
