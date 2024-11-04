@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layout.app')
 
 @section('header')
 <h1 class="text-center">Your Cart</h1>

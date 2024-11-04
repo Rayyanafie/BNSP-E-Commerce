@@ -11,7 +11,7 @@
 @section('content')
 <div class="max-w-lg mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
     <h2 class="text-2xl font-semibold text-center mb-4">Add New Product</h2>
-    <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+    <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
 
         <!-- Product Name -->

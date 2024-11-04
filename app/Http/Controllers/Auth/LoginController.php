@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -46,13 +46,22 @@ class LoginController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        // Proses login user
+        // Attempt to authenticate the user
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            // Redirect ke halaman dashboard atau halaman yang diinginkan setelah login
-            return redirect()->intended(route('products.index'));
+            // Check user role and redirect accordingly
+            $user = Auth::user();
+
+            if ($user->role === 1) {
+                return redirect()->route('admin.index'); // Redirect to admin dashboard
+            } elseif ($user->role === 2) {
+                return redirect()->route('user.index');  // Redirect to user dashboard
+            }
         } else {
-            // Redirect kembali dengan pesan error jika login gagal
+            // Redirect back with error message if login fails
             return back()->withErrors(['username' => 'The provided credentials do not match our records.']);
         }
     }
+
+
+
 }

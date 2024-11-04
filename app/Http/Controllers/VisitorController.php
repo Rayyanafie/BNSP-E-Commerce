@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class TransactionController extends Controller
+class VisitorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $products = Product::all();
+        $categories = Category::all(); // Mengambil semua kategori
+
+        return view('user.index', compact('products', 'categories'));
     }
 
     /**

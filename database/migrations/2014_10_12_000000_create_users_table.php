@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id()->autoIncrement();
+            $table->integer('role')->default(2);
             $table->string('username');
             $table->string('password');
             $table->string('email')->unique();

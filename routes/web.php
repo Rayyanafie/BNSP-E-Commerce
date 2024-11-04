@@ -6,6 +6,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\VisitorController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -25,15 +27,16 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::post('/login', [UserController::class, 'login'])->name('users.login');
-
+Route::get('/', [VisitorController::class, 'index'])->name('user.index');
 // Protected Routes - Only for Authenticated Users
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', [ProductController::class, 'index'])->name('home');
 
-    Route::resource('products', ProductController::class);
+
+    Route::resource('product', ProductController::class);
     Route::resource('categories', CategoryController::class);
-    Route::resource('users', UserController::class);
-    Route::resource('carts', CartController::class);
+    Route::resource('user', UserController::class);
+    Route::resource('cart', CartController::class);
+
 
     // Route for adding a product to the cart
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -45,7 +48,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/pdf', [OrderController::class, 'downloadPDF'])->name('orders.downloadReceipt');
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index')->middleware('auth', 'admin');
+    Route::get('/dashboard', [VisitorController::class, 'index'])->name('user.index')->middleware('auth', 'user');
+
 });
 
 Auth::routes();
