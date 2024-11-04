@@ -7,8 +7,6 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-
 
 class RegisterController extends Controller
 {
@@ -30,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -56,38 +54,6 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
-    public function store(Request $request)
-    {
-
-        // Validasi data
-        $request->validate([
-            'username' => 'required|string|max:255',
-            'password' => 'required|string|min:8',
-            'email' => 'required|email|unique:users,email',
-            'birth_date' => 'required|date',
-            'gender' => 'required|string',
-            'address' => 'required|string',
-            'city' => 'required|string',
-            'phone' => 'required|string',
-            'paypal_id' => 'required|string',
-        ]);
-        // Hash password sebelum menyimpan
-        User::create([
-            'username' => $request->username,
-            'password' => bcrypt($request->password),
-            'email' => $request->email,
-            'birth_date' => $request->birth_date,
-            'gender' => $request->gender,
-            'address' => $request->address,
-            'city' => $request->city,
-            'phone' => $request->phone,
-            'paypal_id' => $request->paypal_id,
-        ]);
-
-        // Redirect ke halaman login atau halaman lain
-        return redirect()->route('login')->with('success', 'User created successfully.');
-    }
-
 
     /**
      * Create a new user instance after a valid registration.

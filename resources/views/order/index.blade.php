@@ -67,7 +67,7 @@
         @else
             <a href="#" class="btn btn-primary disabled">Download Receipt</a>
         @endif
-        <a href="{{ route('products.index') }}" class="btn btn-secondary">Return to Products</a>
+        <a href="{{ route('user.index') }}" class="btn btn-secondary">Return to Dashboard</a>
     </div>
 </div>
 @endsection

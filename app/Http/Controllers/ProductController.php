@@ -13,14 +13,14 @@ class ProductController extends Controller
         $products = Product::all();
         $categories = Category::all(); // Mengambil semua kategori
 
-        return view('products.index', compact('products', 'categories'));
+        return view('user.index', compact('products', 'categories'));
     }
 
     public function create()
     {
         $categories = Category::all(); // Mengambil semua kategori
 
-        return view('products.create', compact('categories'));
+        return view('product.create', compact('categories'));
 
     }
     public function store(Request $request)
@@ -44,6 +44,6 @@ class ProductController extends Controller
             'image_path' => $imagePath,
         ]);
 
-        return redirect()->route('products.index')->with('success', 'Product created successfully.');
+        return redirect()->route('user.index')->with('success', 'Product created successfully.');
     }
 }

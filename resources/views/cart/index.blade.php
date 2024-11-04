@@ -12,7 +12,7 @@
         </div>
         <script>
             setTimeout(function () {
-                window.location.href = "{{ route('products.index') }}";
+                window.location.href = "{{ route('user.index') }}";
             }, 3000); // 3000 milliseconds = 3 seconds
         </script>
     @endif
@@ -65,6 +65,6 @@
     @endif
 
     <!-- Return to Products Button -->
-    <a href="{{ route('products.index') }}" class="btn btn-secondary mt-3">Return to Products</a>
+    <a href="{{ route('user.index') }}" class="btn btn-secondary mt-3">Return to Products</a>
 </div>
 @endsection

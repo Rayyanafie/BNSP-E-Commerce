@@ -3,7 +3,7 @@
 <h1 class="text-center">Add Product Page</h1>
 @endsection
 @section('nav')
-<div class="mx-auto"><a href="{{ route(name: 'products.index') }}">Back to Product Page</a>
+<div class="mx-auto"><a href="{{ route(name: 'user.index') }}">Back to Product Page</a>
 </div>
 
 @endsection

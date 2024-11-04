@@ -8,6 +8,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VisitorController;
+use App\Http\Controllers\Auth\RegisterController;
+
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -22,11 +24,13 @@ use Illuminate\Support\Facades\Auth;
 */
 
 // Public Routes
+Route::resource('visitor', VisitorController::class);
 Route::get('/login', function () {
     return view('login');
 })->name('login');
 
 Route::post('/login', [UserController::class, 'login'])->name('users.login');
+
 Route::get('/', [VisitorController::class, 'index'])->name('user.index');
 // Protected Routes - Only for Authenticated Users
 Route::middleware(['auth'])->group(function () {

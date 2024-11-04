@@ -6,6 +6,9 @@
 
 @section('nav')
 <div class="container d-flex justify-content-between align-items-center my-3">
+    <div class="col-12 mb-4">
+        <h2>Hello, {{ Auth::check() ? Auth::user()->username : 'Visitor' }}!</h2>
+    </div>
     <!-- Right Side: Cart Button -->
     <a href="{{ route('cart.index') }}" class="btn btn-warning ms-auto w-20">Cart</a>
 </div>
@@ -23,7 +26,7 @@
                 </div>
                 <script>
                     setTimeout(function () {
-                        window.location.href = "{{ route('products.index') }}";
+                        window.location.href = "{{ route('user.index') }}";
                     }, 3000); // Redirect after 3 seconds
                 </script>
             @endif
