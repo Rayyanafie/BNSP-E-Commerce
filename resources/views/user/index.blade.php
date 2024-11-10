@@ -36,12 +36,14 @@
                     <div class="col-md-3 mb-4 product-item" data-category="{{ $product->category->id }}">
                         <div class="card h-100">
                             @if ($product->image_path)
-                                <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}"
-                                    class="card-img-top">
+                                <div class="image-box mx-auto">
+                                    <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}"
+                                        class="card-img-top">
+                                </div>
                             @endif
                             <div class="card-body text-center">
                                 <h5 class="card-title">{{ $product->name }}</h5>
-                                <p class="card-text">${{ number_format($product->price, 2) }}</p>
+                                <p class="card-text">Rp{{ number_format($product->price, 2) }}</p>
 
                                 <div class="d-grid gap-2">
                                     <!-- View Button -->
@@ -99,3 +101,19 @@
     });
 </script>
 @endsection
+
+<style>
+    .image-box {
+        width: 175px;
+        height: 175px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .image-box img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+</style>

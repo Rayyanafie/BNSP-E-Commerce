@@ -58,9 +58,9 @@
         </table>
 
         <!-- Checkout Button -->
-        <form action="{{ route('cart.checkout') }}" method="POST">
+        <form id="checkoutForm" action="{{ route('cart.checkout') }}" method="POST">
             @csrf
-            <button type="submit" class="btn btn-primary">Checkout</button>
+            <button type="button" class="btn btn-primary" onclick="handleCheckout()">Checkout</button>
         </form>
     @endif
 
@@ -68,3 +68,28 @@
     <a href="{{ route('user.index') }}" class="btn btn-secondary mt-3">Return to Products</a>
 </div>
 @endsection
+
+<script>
+    function handleCheckout() {
+        // Submit the checkout form
+        document.getElementById('checkoutForm').submit();
+
+        // Send an email after the form submission
+        fetch('{{ route('email.send') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({})
+        }).then(response => {
+            if (response.ok) {
+                console.log('Email sent successfully');
+            } else {
+                console.error('Failed to send email');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>

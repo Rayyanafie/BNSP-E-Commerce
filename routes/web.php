@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\EmailController;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -54,6 +55,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index')->middleware('auth', 'admin');
     Route::get('/dashboard', [VisitorController::class, 'index'])->name('user.index')->middleware('auth', 'user');
+    Route::get('/users/detail', [UserController::class, 'index'])->name('user.detail');
+    Route::put('/user/update/{id}', [UserController::class, 'update'])->name('user.update');
+
+    Route::post('/send-email', [EmailController::class, 'sendEmail'])->name('email.send');
 
 });
 

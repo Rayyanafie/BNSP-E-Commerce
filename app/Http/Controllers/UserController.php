@@ -12,7 +12,8 @@ class UserController extends Controller
      */
     public function index()
     {
-
+        $user = Auth::user();
+        return view('user.detail', compact('user'));
     }
 
     /**
@@ -56,13 +57,8 @@ class UserController extends Controller
         ]);
 
         // Redirect ke halaman login atau halaman lain
-        return redirect()->route('login')->with('success', 'User created successfully.');
+        return redirect()->route('admin.index')->with('success', 'User created successfully.');
     }
-
-
-
-
-
 
     /**
      * Display the specified resource.
@@ -77,15 +73,45 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        return view('user.edit', compact('user'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'password' => 'nullable|string|min:8',
+            'email' => 'required|email|unique:users,email,' . $id,
+            'birth_date' => 'required|date',
+            'gender' => 'required|string',
+            'address' => 'required|string',
+            'city' => 'required|string',
+            'phone' => 'required|string',
+            'paypal_id' => 'required|string',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->username = $request->username;
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->password);
+        }
+        $user->email = $request->email;
+        $user->birth_date = $request->birth_date;
+        $user->gender = $request->gender;
+        $user->address = $request->address;
+        $user->city = $request->city;
+        $user->phone = $request->phone;
+        $user->paypal_id = $request->paypal_id;
+        $user->save();
+
+        if ($user->role == 1) {
+            return redirect()->route('admin.index')->with('success', 'User updated successfully.');
+        } elseif ($user->role == 2) {
+            return redirect()->route('user.detail')->with('success', 'User updated successfully.');
+        }
+
+        return redirect()->back()->with('success', 'User updated successfully.');
     }
 
     /**
@@ -93,6 +119,9 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect()->route('admin.index')->with('success', 'User deleted successfully.');
     }
 }

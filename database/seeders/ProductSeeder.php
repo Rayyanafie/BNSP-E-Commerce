@@ -16,39 +16,53 @@ class ProductSeeder extends Seeder
     {
         $products = [
             [
-                'name' => 'Product 1',
-                'description' => 'Description for product 1',
-                'price' => 100,
-                'category_id' => 1,
-                'image_path' => 'products/0z5lLX5XQeKMPZBER3YC1gv8zMo4ZTPcUEObwaK7.png',
+                'name' => 'Oximeter',
+                'description' => 'Alat untuk mengukur kadar oksigen dalam darah.',
+                'price' => 150000,
+                'category_id' => 1, // Alat Diagnostik
+                'image_path' => 'products/oximeter.jpg',
             ],
             [
-                'name' => 'Product 2',
-                'description' => 'Description for product 2',
-                'price' => 200,
-                'category_id' => 1,
-                'image_path' => 'products/0z5lLX5XQeKMPZBER3YC1gv8zMo4ZTPcUEObwaK7.png',
+                'name' => 'Thermometer',
+                'description' => 'Alat untuk mengukur suhu tubuh.',
+                'price' => 75000,
+                'category_id' => 1, // Alat Diagnostik
+                'image_path' => 'products/thermometer.jpg',
             ],
             [
-                'name' => 'Product 3',
-                'description' => 'Description for product 3',
-                'price' => 300,
-                'category_id' => 2,
-                'image_path' => 'products/0z5lLX5XQeKMPZBER3YC1gv8zMo4ZTPcUEObwaK7.png',
+                'name' => 'Stethoscope',
+                'description' => 'Alat untuk mendengar detak jantung dan suara paru-paru.',
+                'price' => 200000,
+                'category_id' => 1, // Alat Diagnostik
+                'image_path' => 'products/stetoskop.jpg',
             ],
             [
-                'name' => 'Product 4',
-                'description' => 'Description for product 4',
-                'price' => 400,
-                'category_id' => 2,
-                'image_path' => 'products/0z5lLX5XQeKMPZBER3YC1gv8zMo4ZTPcUEObwaK7.png',
+                'name' => 'Tongkat',
+                'description' => 'Alat bantu berjalan untuk pasien.',
+                'price' => 50000,
+                'category_id' => 2, // Alat Bantu Mobilitas
+                'image_path' => 'products/tongkat.jpg',
             ],
             [
-                'name' => 'Product 5',
-                'description' => 'Description for product 5',
-                'price' => 500,
-                'category_id' => 1,
-                'image_path' => 'products/0z5lLX5XQeKMPZBER3YC1gv8zMo4ZTPcUEObwaK7.png',
+                'name' => 'Kursi',
+                'description' => 'Kursi untuk pasien yang membutuhkan tempat duduk khusus.',
+                'price' => 150000,
+                'category_id' => 2, // Alat Bantu Mobilitas
+                'image_path' => 'products/kursi.jpg',
+            ],
+            [
+                'name' => 'Senter',
+                'description' => 'Senter untuk pemeriksaan kesehatan.',
+                'price' => 30000,
+                'category_id' => 3, // Aksesori Kesehatan
+                'image_path' => 'products/senter.jpg',
+            ],
+            [
+                'name' => 'Timbangan',
+                'description' => 'Alat untuk mengukur berat badan.',
+                'price' => 100000,
+                'category_id' => 3, // Aksesori Kesehatan
+                'image_path' => 'products/timbangan.jpg',
             ],
         ];
 

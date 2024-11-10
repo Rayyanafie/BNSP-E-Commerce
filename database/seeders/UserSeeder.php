@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
 
         User::create([
             'username' => 'user2',
-            'email' => 'user2@example.com',
+            'email' => 'raegaxus12@gmail.com',
             'password' => Hash::make('123123123'),
             'birth_date' => '1992-02-02',
             'gender' => 'female',

@@ -44,6 +44,46 @@ class ProductController extends Controller
             'image_path' => $imagePath,
         ]);
 
-        return redirect()->route('user.index')->with('success', 'Product created successfully.');
+        return redirect()->route('admin.index')->with('success', 'Product created successfully.');
+    }
+
+    public function edit(string $id)
+    {
+        $product = Product::findOrFail($id);
+        $categories = Category::all();
+        return view('product.edit', compact('product', 'categories'));
+    }
+
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        $product = Product::findOrFail($id);
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->category_id = $request->category_id;
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            $product->image_path = $imagePath;
+        }
+
+        $product->save();
+
+        return redirect()->route('admin.index')->with('success', 'Product updated successfully.');
+    }
+
+    public function destroy(string $id)
+    {
+        $product = Product::findOrFail($id);
+        $product->delete();
+
+        return redirect()->route('admin.index')->with('success', 'Product deleted successfully.');
     }
 }

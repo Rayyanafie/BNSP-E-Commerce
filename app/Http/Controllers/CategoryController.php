@@ -20,7 +20,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        return view('product.create');
     }
 
     /**
@@ -34,7 +34,7 @@ class CategoryController extends Controller
 
         Category::create($request->all());
 
-        return redirect()->route('categories.index')
+        return redirect()->route('admin.index')
             ->with('success', 'Category created successfully.');
     }
 

@@ -14,13 +14,16 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        // Buat 2 data kategori
         Category::create([
-            'name' => 'Kesehatan'
+            'name' => 'Alat Diagnostik'
         ]);
 
         Category::create([
-            'name' => 'Peralatan Medis'
+            'name' => 'Alat Bantu Mobilitas'
+        ]);
+
+        Category::create([
+            'name' => 'Aksesori Kesehatan'
         ]);
     }
 }

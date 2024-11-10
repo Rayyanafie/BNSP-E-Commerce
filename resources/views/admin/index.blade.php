@@ -35,8 +35,17 @@
                             <td><img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}"
                                     width="50"></td>
                             <td>
-                                <button class="btn btn-warning">Edit</button>
-                                <button class="btn btn-danger">Delete</button>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editProductModal"
+                                    data-id="{{ $product->id }}" data-name="{{ $product->name }}"
+                                    data-description="{{ $product->description }}"
+                                    data-category_id="{{ $product->category_id }}"
+                                    data-price="{{ $product->price }}">Edit</button>
+                                <form action="{{ route('product.destroy', $product->id) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
@@ -71,8 +80,17 @@
                             <td>{{ $user->role }}</td>
                             <td>{{ $user->created_at }}</td>
                             <td>
-                                <button class="btn btn-warning">Edit</button>
-                                <button class="btn btn-danger">Delete</button>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editUserModal"
+                                    data-id="{{ $user->id }}" data-username="{{ $user->username }}"
+                                    data-email="{{ $user->email }}" data-birth_date="{{ $user->birth_date }}"
+                                    data-gender="{{ $user->gender }}" data-address="{{ $user->address }}"
+                                    data-city="{{ $user->city }}" data-phone="{{ $user->phone }}"
+                                    data-paypal_id="{{ $user->paypal_id }}" data-role="{{ $user->role }}">Edit</button>
+                                <form action="{{ route('user.destroy', $user->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
@@ -103,8 +121,14 @@
                         <tr>
                             <td>{{ $category->name }}</td>
                             <td>
-                                <button class="btn btn-warning">Edit</button>
-                                <button class="btn btn-danger">Delete</button>
+                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editCategoryModal"
+                                    data-id="{{ $category->id }}" data-name="{{ $category->name }}">Edit</button>
+                                <form action="{{ route('categories.destroy', $category->id) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
                             </td>
                         </tr>
                     @endforeach
@@ -114,6 +138,51 @@
     </div>
 </div>
 @endsection
+
+<!-- Edit Product Modal -->
+<div id="editProductModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Product</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editProductForm" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <label for="edit_name" class="form-label">Product Name</label>
+                        <input type="text" name="name" id="edit_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_description" class="form-label">Product Description</label>
+                        <textarea name="description" id="edit_description" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_category_id" class="form-label">Product Category</label>
+                        <select name="category_id" id="edit_category_id" class="form-select" required>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_price" class="form-label">Price</label>
+                        <input type="number" name="price" id="edit_price" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_image" class="form-label">Product Image</label>
+                        <input type="file" name="image" id="edit_image" class="form-control">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Add Product Modal -->
 <div id="addProductModal" class="modal fade" tabindex="-1" role="dialog">
@@ -166,8 +235,72 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="text-center"></div>
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Edit User Modal -->
+<div id="editUserModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editUserForm" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <label for="edit_username" class="form-label">Username</label>
+                        <input type="text" name="username" id="edit_username" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_email" class="form-label">Email</label>
+                        <input type="email" name="email" id="edit_email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_birth_date" class="form-label">Birth Date</label>
+                        <input type="date" name="birth_date" id="edit_birth_date" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_gender" class="form-label">Gender</label>
+                        <select name="gender" id="edit_gender" class="form-select">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_address" class="form-label">Address</label>
+                        <input type="text" name="address" id="edit_address" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_city" class="form-label">City</label>
+                        <input type="text" name="city" id="edit_city" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_phone" class="form-label">Phone</label>
+                        <input type="tel" name="phone" id="edit_phone" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_paypal_id" class="form-label">PayPal ID</label>
+                        <input type="text" name="paypal_id" id="edit_paypal_id" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_role" class="form-label">Role</label>
+                        <select name="role" id="edit_role" class="form-select" required>
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                        </select>
+                    </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Add Product</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
                     </div>
                 </form>
             </div>
@@ -284,6 +417,31 @@
     </div>
 </div>
 
+<!-- Edit Category Modal -->
+<div id="editCategoryModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editCategoryForm" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <label for="edit_category_name" class="form-label">Category Name</label>
+                        <input type="text" name="name" id="edit_category_name" class="form-control" required>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Add Category Modal -->
 <div id="addCategoryModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog">
@@ -303,13 +461,13 @@
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Add Category</button>
-                    </div>
-                </form>
+                    <div class="text-center"></div>
+                    <button type="submit" class="btn btn-primary">Add Category</button>
             </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 
 <script>
@@ -331,4 +489,47 @@
             tr[i].style.display = match ? "" : "none";
         }
     }
+
+    // Populate edit modals with existing data
+    $('#editProductModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var name = button.data('name');
+        var description = button.data('description');
+        var category_id = button.data('category_id');
+        var price = button.data('price');
+
+        var modal = $(this);
+        modal.find('#editProductForm').attr('action', '/product/' + id);
+        modal.find('#edit_name').val(name);
+        modal.find('#edit_description').val(description);
+        modal.find('#edit_category_id').val(category_id);
+        modal.find('#edit_price').val(price);
+    });
+
+    $('#editUserModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var username = button.data('username');
+        var email = button.data('email');
+        var birth_date = button.data('birth_date');
+        var gender = button.data('gender');
+        var address = button.data('address');
+        var city = button.data('city');
+        var phone = button.data('phone');
+        var paypal_id = button.data('paypal_id');
+        var role = button.data('role');
+
+        var modal = $(this);
+        modal.find('#editUserForm').attr('action', '/user/' + id);
+        modal.find('#edit_username').val(username);
+        modal.find('#edit_email').val(email);
+        modal.find('#edit_birth_date').val(birth_date);
+        modal.find('#edit_gender').val(gender);
+        modal.find('#edit_address').val(address);
+        modal.find('#edit_city').val(city);
+        modal.find('#edit_phone').val(phone);
+        modal.find('#edit_paypal_id').val(paypal_id);
+        modal.find('#edit_role').val(role);
+    });
 </script>

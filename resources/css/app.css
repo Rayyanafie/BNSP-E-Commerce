@@ -1,6 +1,7 @@
     @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 /* Overlay untuk background gelap */
 .modal-overlay {
     display: none; /* Default: hidden */
